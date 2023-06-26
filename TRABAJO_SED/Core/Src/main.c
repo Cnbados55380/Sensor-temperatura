@@ -242,34 +242,34 @@ int main(void)
 
 		  
 
-		if (temperatura > 10) {
+		if (Temperature > 10) {
 	            encenderled(1);
 	        }
-	        if (temperatura > 12) {
+	        if (Temperature > 12) {
 	            encenderled(2);
 	        }
-	        if (temperatura > 15) {
+	        if (Temperature > 15) {
 	            encenderled(3);
 	        }
-	        if (temperatura > 18) {
+	        if (Temperature > 18) {
 	            encenderled(4);
 	        }
-		if (temperatura > 20) {
+		if (Temperature > 20) {
 	            encenderled(5);
 	        }
-		if (temperatura > 25) {
+		if (Temperature > 25) {
 	            encenderled(6);
 	        }
-		if (temperatura > 30) {
+		if (Temperature > 30) {
 	            encenderled(7);
 	        }
-		if (temperatura > 35) {
+		if (Temperature > 35) {
 	            encenderled(8);
 	        }
-		if (temperatura > 40) {
+		if (Temperature > 40) {
 	            encenderled(9);
 	        }
-	        if (temperatura > 45) {
+	        if (Temperature > 45) {
 	            encenderled(10);
 	        }
 	    }
