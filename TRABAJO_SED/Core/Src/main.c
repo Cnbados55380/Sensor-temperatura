@@ -27,14 +27,14 @@
 #include "math.h"
 
 #define BARRAS_GPIO GPIOA
-#define BARRAS_PIN_8 GPIO_PIN_0 //verde
-#define BARRAS_PIN_9 GPIO_PIN_1 //naranja
-#define BARRAS_PIN_10 GPIO_PIN_2 //rojo
-#define BARRAS_PIN_11 GPIO_PIN_3 //azul
-#define BARRAS_PIN_12 GPIO_PIN_4 //verde
-#define BARRAS_PIN_13 GPIO_PIN_5 //naranja
-#define BARRAS_PIN_14 GPIO_PIN_6 //rojo
-#define BARRAS_PIN_15 GPIO_PIN_7 //azul
+#define BARRAS_PIN_8 GPIO_PIN_0 
+#define BARRAS_PIN_9 GPIO_PIN_1 
+#define BARRAS_PIN_10 GPIO_PIN_2 
+#define BARRAS_PIN_11 GPIO_PIN_3 
+#define BARRAS_PIN_12 GPIO_PIN_4 
+#define BARRAS_PIN_13 GPIO_PIN_5
+#define BARRAS_PIN_14 GPIO_PIN_6 
+#define BARRAS_PIN_15 GPIO_PIN_7 
 
 /* USER CODE END Includes */
 
