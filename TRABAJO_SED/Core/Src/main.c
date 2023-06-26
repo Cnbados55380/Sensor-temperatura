@@ -26,6 +26,16 @@
 #include "DHT.h"
 #include "math.h"
 
+#define BARRAS_GPIO GPIOA
+#define BARRAS_PIN_8 GPIO_PIN_0 //verde
+#define BARRAS_PIN_9 GPIO_PIN_1 //naranja
+#define BARRAS_PIN_10 GPIO_PIN_2 //rojo
+#define BARRAS_PIN_11 GPIO_PIN_3 //azul
+#define BARRAS_PIN_12 GPIO_PIN_4 //verde
+#define BARRAS_PIN_13 GPIO_PIN_5 //naranja
+#define BARRAS_PIN_14 GPIO_PIN_6 //rojo
+#define BARRAS_PIN_15 GPIO_PIN_7 //azul
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -115,7 +125,7 @@ static void MX_TIM2_Init(void);
 
 	}
 
-
+       
 /* USER CODE END 0 */
 
 /**
@@ -223,18 +233,48 @@ int main(void)
 		  Display_Temp(Temperature , 0);
 
 		  /* Control de la barra LED */
-		  //AQUI VA EL CONTROL CON IFs ENCADENADOS
-		  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_15,GPIO_PIN_SET); // azul
-		  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,GPIO_PIN_SET); // rojo
-		  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,GPIO_PIN_SET); // naranja
-		  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_12,GPIO_PIN_SET); // verde
-		  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_11,GPIO_PIN_SET); // azul
-		  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_10,GPIO_PIN_SET); // rojo
-		  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_9,GPIO_PIN_SET); // naranja
-		  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_8,GPIO_PIN_SET); // verde
-		  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,GPIO_PIN_SET); // azul
-		  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_13,GPIO_PIN_SET); // rojo
+	void encenderled(uint16_t numled) {
+    	// Enciende la cantidad correspondiente de barras LED
+   	 	for (uint16_t i = 0; i < numled; i++) {
+       		 HAL_GPIO_WritePin(BARRAS_GPIO, BARRAS_PIN_0 << i, GPIO_PIN_SET);
+    		}
+	}
 
+		  
+
+		if (temperatura > 10) {
+	            encenderled(1);
+	        }
+	        if (temperatura > 12) {
+	            encenderled(2);
+	        }
+	        if (temperatura > 15) {
+	            encenderled(3);
+	        }
+	        if (temperatura > 18) {
+	            encenderled(4);
+	        }
+		if (temperatura > 20) {
+	            encenderled(5);
+	        }
+		if (temperatura > 25) {
+	            encenderled(6);
+	        }
+		if (temperatura > 30) {
+	            encenderled(7);
+	        }
+		if (temperatura > 35) {
+	            encenderled(8);
+	        }
+		if (temperatura > 40) {
+	            encenderled(9);
+	        }
+	        if (temperatura > 45) {
+	            encenderled(10);
+	        }
+	    }
+	}
+		
 		  /* Control del servomotor con señal PWM */
 		  // (AL USAR TEMPORIZADORES NO OLVIDEIS CONFIGURARLOS)
 
