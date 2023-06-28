@@ -1,0 +1,28 @@
+19:22:24 **** Incremental Build of configuration Debug for project TRABAJO_SED ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:149:6: warning: unused variable 't_espera' [-Wunused-variable]
+  149 |  int t_espera = 2000 ; //Tiempo de espera en ms
+      |      ^~~~~~~~
+../Core/Src/main.c:148:11: warning: unused variable 'tick_start' [-Wunused-variable]
+  148 |  uint32_t tick_start; //Pensado para guarda el valor de HAL_GetTick()
+      |           ^~~~~~~~~~
+arm-none-eabi-gcc -o "TRABAJO_SED.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\SMN\Documents\GitHub\Sensor-temperatura\TRABAJO_SED\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TRABAJO_SED.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: TRABAJO_SED.elf
+ 
+arm-none-eabi-size   TRABAJO_SED.elf 
+arm-none-eabi-objdump -h -S  TRABAJO_SED.elf  > "TRABAJO_SED.list"
+   text	   data	    bss	    dec	    hex	filename
+  31580	    572	   1852	  34004	   84d4	TRABAJO_SED.elf
+Finished building: default.size.stdout
+ 
+Finished building: TRABAJO_SED.list
+ 
+19:22:31 **** Incremental Build of configuration Debug for project TRABAJO_SED ****
+make -j4 all 
+arm-none-eabi-size   TRABAJO_SED.elf 
+   text	   data	    bss	    dec	    hex	filename
+  31580	    572	   1852	  34004	   84d4	TRABAJO_SED.elf
+Finished building: default.size.stdout
+ 

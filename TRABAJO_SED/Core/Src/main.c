@@ -26,15 +26,12 @@
 #include "DHT.h"
 #include "math.h"
 
-#define BARRAS_GPIO GPIOA
-#define BARRAS_PIN_8 GPIO_PIN_0 
-#define BARRAS_PIN_9 GPIO_PIN_1 
-#define BARRAS_PIN_10 GPIO_PIN_2 
-#define BARRAS_PIN_11 GPIO_PIN_3 
-#define BARRAS_PIN_12 GPIO_PIN_4 
-#define BARRAS_PIN_13 GPIO_PIN_5
-#define BARRAS_PIN_14 GPIO_PIN_6 
-#define BARRAS_PIN_15 GPIO_PIN_7 
+#define NUMERO_LED 10
+
+typedef struct PINES{
+	GPIO_TypeDef *GPIOx;
+	uint16_t GPIO_Pin;
+}PINES;
 
 /* USER CODE END Includes */
 
@@ -77,6 +74,10 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN 0 */
 
 	/* Variables globales */
+	PINES PINES_LED[] = {{GPIOB,GPIO_PIN_14},{GPIOB,GPIO_PIN_15},{GPIOD,GPIO_PIN_8},
+						 {GPIOD,GPIO_PIN_9},{GPIOD,GPIO_PIN_10},{GPIOD,GPIO_PIN_11},
+						 {GPIOD,GPIO_PIN_12},{GPIOD,GPIO_PIN_13},{GPIOD,GPIO_PIN_14},
+						 {GPIOD,GPIO_PIN_15}};
 
 	DHT_DataTypedef DHT22_Data; //Estructura que guarda la temeperatura y la humedad
 	float Humidity; //Variable para guardar la humedad
@@ -93,9 +94,11 @@ static void MX_TIM2_Init(void);
 
 	/* Prototipo de funciones utilizadas */
 
-	//Devuelve TRUE cuando el boton ha sido presionado tras el periodo de dobounce
+	/* Devuelve TRUE cuando el boton ha sido presionado tras el periodo de dobounce */
 	int debouncer(volatile int* button_int, GPIO_TypeDef* GPIO_port, uint16_t GPIO_number);
 
+	/* Enciende los LED correspondientes a al temp seleccionada y apaga el resto */
+	void encenderled(int i, PINES PINES_LED[]);
 
 	/* INTERRUPCIONES */
 
@@ -122,7 +125,6 @@ static void MX_TIM2_Init(void);
 	  Temperature = DHT22_Data.Temperature;
 	  Humidity = DHT22_Data.Humidity;
 
-
 	}
 
        
@@ -138,6 +140,9 @@ int main(void)
 
 	/* Asignación de variables */
 	T_diff = T_max - T_min ;
+	float salto_temp = T_diff / NUMERO_LED ; //Se utiliza para el cambio en los LED iluminados
+	int total_led = 0 ; //Será el número total de LED a encenderse
+	int j = 1; //A usar dentro de un bucle
 
 	/* Variables locales */
 	uint32_t tick_start; //Pensado para guarda el valor de HAL_GetTick()
@@ -219,70 +224,43 @@ int main(void)
 			  if (!(i++ % 20000)){
 				  Display_Temp(Temp_control*10 , 1);
 				  i = 1;
-			  }
-		  }
+			  }//End_IF
+
+		  }//End_WHILE
+
 		  //Deshabilitacion del conversor
 		  HAL_ADC_Stop(&hadc1);
 
-	  }
+	  }//End_IF
+
 	  else{ //Estado para la ejecución del programa con una temperatura de control dada
 
 		  /* Mostramos los valores obtenidos en la pantalla LCD */
 		  /* Ver libreria "i2c-lcd.h" */
-		  Display_Rh(Humidity);
-		  Display_Temp(Temperature , 0);
-
+		  if (!(j++ % 20000)){
+			  Display_Rh(Humidity);
+			  Display_Temp(Temperature , 0);
+			  j = 1;
+		  }
 		  /* Control de la barra LED */
-	void encenderled(uint16_t numled) {
-    	// Enciende la cantidad correspondiente de barras LED
-   	 	for (uint16_t i = 0; i < numled; i++) {
-       		 HAL_GPIO_WritePin(BARRAS_GPIO, BARRAS_PIN_0 << i, GPIO_PIN_SET);
-    		}
-	}
-
 		  
+		  /* Se trunca el numero de led en función del salto térmico */
+		  total_led = (int)((Temperature/10 - T_min) / salto_temp);
 
-		if (Temperature > 10) {
-	            encenderled(1);
-	        }
-	        if (Temperature > 12) {
-	            encenderled(2);
-	        }
-	        if (Temperature > 15) {
-	            encenderled(3);
-	        }
-	        if (Temperature > 18) {
-	            encenderled(4);
-	        }
-		if (Temperature > 20) {
-	            encenderled(5);
-	        }
-		if (Temperature > 25) {
-	            encenderled(6);
-	        }
-		if (Temperature > 30) {
-	            encenderled(7);
-	        }
-		if (Temperature > 35) {
-	            encenderled(8);
-	        }
-		if (Temperature > 40) {
-	            encenderled(9);
-	        }
-	        if (Temperature > 45) {
-	            encenderled(10);
-	        }
-	    }
-	}
-		
-		  /* Control del servomotor con señal PWM */
-		  // (AL USAR TEMPORIZADORES NO OLVIDEIS CONFIGURARLOS)
+		  /* Llamada a la función encenderled */
 
-	  }
+		  encenderled(total_led,PINES_LED);
 
-  }
+		  /* Control del servomotor */
+
+
+		}//End_ELSE
+
+ }//End_WHILE(1)
+
   /* USER CODE END 3 */
-}
+
+}//End_main
 
 /**
   * @brief System Clock Configuration
@@ -549,6 +527,21 @@ static void MX_GPIO_Init(void)
 		}
 		return 0;
 	}
+
+	void encenderled(int i, PINES PINES_LED[]){
+
+		int j = 0;
+
+		for(int n = 0 ; n < i ; n++){
+			HAL_GPIO_WritePin(PINES_LED[n].GPIOx, PINES_LED[n].GPIO_Pin, GPIO_PIN_SET);
+			j++;
+		}//End_FOR
+
+		while(j < NUMERO_LED){
+			HAL_GPIO_WritePin(PINES_LED[j].GPIOx, PINES_LED[j].GPIO_Pin, GPIO_PIN_RESET);
+			j++;
+		}//End_WHILE
+	};
 
 /* USER CODE END 4 */
 
