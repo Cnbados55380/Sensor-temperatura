@@ -264,11 +264,9 @@ int main(void)
 
 		  /* Se va a modificar la posición como mínimo cada 5 segundos pues es el periodo de muestreo de la temperatura */
 		  if ((HAL_GetTick() - tick_start) > t_espera){
-
 			  tick_start = HAL_GetTick() ;
 			  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, posicion_servo(Temp_control-(Temperature/10)));
-
-		  }//END if
+		  }
 
 
 		}//End_ELSE

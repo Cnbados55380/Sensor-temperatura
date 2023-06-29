@@ -102,9 +102,6 @@ static void MX_TIM1_Init(void);
 	/* Enciende los LED correspondientes a al temp seleccionada y apaga el resto */
 	void encenderled(int i, PINES PINES_LED[]);
 
-	/* Devuelve el ancho de pulso del servomotor para modificar el duty cycle */
-	int posicion_servo(float temp);
-
 	/* INTERRUPCIONES */
 
 	void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) // Genera la interrupción cuando se pulsa el "user boton" de la placa (PA0)
@@ -150,8 +147,8 @@ int main(void)
 	int j = 1; //A usar dentro de un bucle
 
 	/* Variables locales */
-	uint32_t tick_start = HAL_GetTick() ; //Pensado para guarda el valor de HAL_GetTick()
-	int t_espera = 5000 ; //Tiempo de espera en ms
+	uint32_t tick_start; //Pensado para guarda el valor de HAL_GetTick()
+	int t_espera = 2000 ; //Tiempo de espera en ms
 
 	// De momento estas variables no se usan, se pueden usar con la funcion HAL_GetTick() --> while((HAL_GetTick() - tick_pulso) < t_espera)
 
@@ -189,9 +186,6 @@ int main(void)
 	  HAL_Delay(2000);
 	  lcd_clear();
 
-	  /* Habilitación señal PWM */
-	  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-
 	  /* Habilitacion de interrupciones */
 	  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 	  HAL_TIM_Base_Start_IT(&htim2);
@@ -209,7 +203,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  if(debouncer(&Seleccion_estado, GPIOA, GPIO_PIN_0)){ //Estado para la eleccion de la temperatura de control. NO ESCRIBIR AQU�?
+	  if(debouncer(&Seleccion_estado, GPIOA, GPIO_PIN_0)){ //Estado para la eleccion de la temperatura de control. NO ESCRIBIR AQU�?
 
 		  lcd_clear();
 		  lcd_put_cur(0,0);
@@ -261,14 +255,6 @@ int main(void)
 		  encenderled(total_led,PINES_LED);
 
 		  /* Control del servomotor */
-
-		  /* Se va a modificar la posición como mínimo cada 5 segundos pues es el periodo de muestreo de la temperatura */
-		  if ((HAL_GetTick() - tick_start) > t_espera){
-
-			  tick_start = HAL_GetTick() ;
-			  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, posicion_servo(Temp_control-(Temperature/10)));
-
-		  }//END if
 
 
 		}//End_ELSE
@@ -624,14 +610,6 @@ static void MX_GPIO_Init(void)
 			j++;
 		}//End_WHILE
 	};
-
-	int posicion_servo(float temp){
-
-		int pos_min = 100 , pos_max = 200 , dif_temp = 10;
-		if(temp <= 0) return pos_min;
-		else return (int)(pos_min + temp/ dif_temp * (pos_max - pos_min));
-
-	}
 
 /* USER CODE END 4 */
 

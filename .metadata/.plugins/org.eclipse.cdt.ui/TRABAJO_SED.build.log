@@ -1,10 +1,10 @@
-19:22:31 **** Incremental Build of configuration Debug for project TRABAJO_SED ****
+02:44:03 **** Incremental Build of configuration Debug for project TRABAJO_SED ****
 make -j4 all 
 arm-none-eabi-size   TRABAJO_SED.elf 
    text	   data	    bss	    dec	    hex	filename
-  31580	    572	   1852	  34004	   84d4	TRABAJO_SED.elf
+  34188	    572	   1924	  36684	   8f4c	TRABAJO_SED.elf
 Finished building: default.size.stdout
  
 
-19:22:31 Build Finished. 0 errors, 0 warnings. (took 446ms)
+02:44:04 Build Finished. 0 errors, 0 warnings. (took 464ms)
 

@@ -23,3 +23,6 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\Users\SMN\Documents
 
 !ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2023-06-28 19:20:06.232
 !MESSAGE Existing sessions are:
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-06-29 01:33:59.989
+!MESSAGE Indexed 'abg_timers_servo' (6 sources, 56 headers) in 1.6 sec: 2,043 declarations; 3,094 references; 10 unresolved inclusions; 1 syntax errors; 201 unresolved names (3.8%)
